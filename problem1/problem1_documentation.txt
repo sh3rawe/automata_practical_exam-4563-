@@ -1,0 +1,49 @@
+This Python script (`problem1.py`) implements a method to determine if two Deterministic Finite Automata (DFAs) are equivalent, meaning they accept the same language.
+
+Core Components:
+
+1.  `DFA` Class:
+    *   Represents a DFA.
+    *   `__init__(self, states, alphabet, transitions, start_state, accept_states)`:
+        *   Initializes a DFA with its five components:
+            *   `states`: A set of state names (strings).
+            *   `alphabet`: A set of input symbols (strings).
+            *   `transitions`: A dictionary mapping (current_state, input_symbol) tuples to the next_state (string).
+            *   `start_state`: The name of the initial state (string).
+            *   `accept_states`: A set of accepting (or final) state names (strings).
+    *   `get_next_state(self, current_state, symbol)`:
+        *   Takes the current state and an input symbol.
+        *   Returns the next state based on the DFA's transition function.
+        *   Returns `None` if no transition is defined for the given state and symbol.
+
+2.  `are_dfas_equivalent(dfa1: DFA, dfa2: DFA) -> bool`:
+    *   This is the main function for checking DFA equivalence.
+    *   It takes two `DFA` objects (`dfa1` and `dfa2`) as input.
+    *   It returns `True` if the DFAs accept the same language, and `False` otherwise.
+    *   Algorithm (State Pair Comparison using Breadth-First Search - BFS):
+        1.  **Initial State Check**:
+            *   It first checks if the start states of `dfa1` and `dfa2` have the same acceptance status (i.e., if one is an accept state, the other must also be an accept state, and vice-versa). If not, the DFAs are immediately considered non-equivalent.
+        2.  **BFS Initialization**:
+            *   A queue is initialized with a pair of the start states: `(dfa1.start_state, dfa2.start_state)`.
+            *   A `visited` set is initialized with this starting pair to keep track of processed state pairs and avoid redundant checks and infinite loops.
+        3.  **BFS Traversal**:
+            *   While the queue is not empty:
+                *   Dequeue a state pair `(state1, state2)`.
+                *   For each symbol in the combined alphabet of `dfa1` and `dfa2`:
+                    *   Determine `next_state1` (from `state1` on the symbol in `dfa1`).
+                    *   Determine `next_state2` (from `state2` on the symbol in `dfa2`).
+                    *   **Acceptance Check**: If one of `next_state1` and `next_state2` is an accept state and the other is not, the DFAs are non-equivalent, and the function returns `False`.
+                    *   **Enqueue New Pairs**: If the pair `(next_state1, next_state2)` has not been visited:
+                        *   Add it to the `visited` set.
+                        *   Enqueue it for further processing.
+        4.  **Equivalence Conclusion**: If the BFS completes without finding any distinguishing state pair (i.e., a pair where one state is accepting and the other is not for the same sequence of inputs), the DFAs are considered equivalent, and the function returns `True`.
+
+Example Usage (`if __name__ == "__main__":` block):
+*   The script includes several examples demonstrating the usage of the `DFA` class and the `are_dfas_equivalent` function.
+*   These examples create various 2-state and 3-state DFAs.
+*   Some pairs of DFAs are designed to be equivalent, while others are designed to be non-equivalent, showcasing different scenarios (e.g., different accepting states, different initial state acceptance).
+*   The results of the equivalence checks are printed to the console.
+
+To use this code:
+1.  Define your DFAs by creating instances of the `DFA` class, providing the states, alphabet, transitions, start state, and accept states.
+2.  Call the `are_dfas_equivalent(your_dfa1, your_dfa2)` function to check if they are equivalent. 

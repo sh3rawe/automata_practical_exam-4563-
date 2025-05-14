@@ -1,0 +1,80 @@
+# Problem 3: Turing Machine for Prime-Length Unary Strings
+
+## Overview
+This program simulates a Turing Machine (TM) that recognizes the language L = { w | w is a unary string of 1's and the length of w is a prime number }.
+
+The TM is simulated in Python using a list to represent the tape, and explicit state transitions to mimic the operation of a real Turing Machine. The program also includes a set of tests to demonstrate and verify the TM's behavior.
+
+---
+
+## Functions and Classes
+
+### 1. `is_prime(n)`
+**Purpose:**
+Checks if a given integer `n` is a prime number.
+
+**How it works:**
+- Returns `False` if `n` is less than 2.
+- Checks divisibility of `n` by all integers from 2 up to the square root of `n`.
+- Returns `True` if no divisors are found (i.e., `n` is prime), otherwise returns `False`.
+
+---
+
+### 2. `TuringMachineSimulator`
+**Purpose:**
+Simulates a Turing Machine that processes a unary string and accepts if its length is prime.
+
+**Key Components:**
+- `self.tape`: A list representing the TM's tape, initialized with the input string and padded with blank symbols ('B').
+- `self.head`: The current position of the tape head (an integer index).
+- `self.state`: The current state of the TM (e.g., 'start', 'marking', 'check_prime', 'accept', 'reject').
+- `self.blank_symbol`: The symbol used for blank cells (default 'B').
+- `self.marked_symbol`: The symbol used to mark processed '1's (default 'X').
+- `self.count`: Counter for the number of '1's in the input (i.e., the length of the unary string).
+
+**Main Methods:**
+- `__init__(self, input_string, blank_symbol='B', marked_symbol='X')`: Initializes the tape, head, state, and other variables.
+- `step(self)`: Simulates one step of the TM. Reads the current tape symbol, updates the tape and state, moves the head, and increments the count as appropriate.
+- `run(self, base_max_steps=50)`: Runs the TM step by step until it halts (accepts or rejects) or a maximum number of steps is reached. Prints the tape and state at each step.
+- `_print_tape_config(self, step_num_or_label)`: Helper method to print the current tape, head position, and state in a readable format.
+
+**How the TM Works:**
+- Starts in the 'start' state at the leftmost cell.
+- Scans right, marking each '1' as 'X' and counting them.
+- When a blank is encountered, transitions to 'check_prime' state.
+- In 'check_prime', uses `is_prime` to decide whether to accept or reject based on the count.
+- The tape and head position are printed at each step for clarity.
+
+---
+
+### 3. `turing_machine_prime_unary_simulated(unary_string_input)`
+**Purpose:**
+Interface function to run the TM simulation on a given input string.
+
+**How it works:**
+- Checks if the input is a valid unary string (contains only '1's).
+- If valid, creates a `TuringMachineSimulator` instance and runs it.
+- Returns the result ('Accept' or 'Reject').
+- If the input is not unary, prints an error and returns 'Reject'.
+
+---
+
+## Testing
+
+The `__main__` block at the end of the file runs a series of test cases:
+- Each test case is a string of '1's (or an invalid string for negative testing).
+- For each test:
+  - The TM simulation is run and the output is printed.
+  - The expected result is computed using the `is_prime` function.
+  - The test passes if the TM's output matches the expected result.
+- There is also a test for a non-unary input (e.g., '101'), which should be rejected.
+
+**Example Test Output:**
+- For input '111' (length 3, which is prime), the TM should accept.
+- For input '1111' (length 4, not prime), the TM should reject.
+- For input '101' (not unary), the TM should reject and print an error message.
+
+---
+
+## Summary
+This program provides a clear simulation of a Turing Machine for recognizing unary strings of prime length. The tape is explicitly modeled as a list, and the state transitions are handled in a readable, step-by-step manner. The included tests demonstrate the correctness and behavior of the simulation. 
